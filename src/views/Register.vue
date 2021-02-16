@@ -9,7 +9,7 @@
       <form name="form" @submit.prevent="handleRegister">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Pseudo</label>
             <input
               v-model="user.username"
               v-validate="'required|min:3|max:20'"
@@ -37,7 +37,7 @@
             >{{errors.first('email')}}</div>
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Mot de passe</label>
             <input
               v-model="user.password"
               v-validate="'required|min:6|max:40'"
@@ -51,7 +51,21 @@
             >{{errors.first('password')}}</div>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary btn-block">Sign Up</button>
+            <label for="passwordbis">Confirmer le mot de passe</label>
+            <input
+              v-model="passwordbis"
+              v-validate="'required|min:6|max:40'"
+              type="password"
+              class="form-control"
+              name="passwordbis"
+            />
+            <div
+              v-if="passwordbis != '' && passwordbis != user.password"
+              class="alert-danger"
+            >Les mots de passes ne sont pas les mêmes !</div>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-block">S'inscrire</button>
           </div>
         </div>
       </form>
@@ -73,6 +87,7 @@ export default {
   data() {
     return {
       user: new User('', '', ''),
+      passwordbis: '',
       submitted: false,
       successful: false,
       message: ''
@@ -93,7 +108,7 @@ export default {
       this.message = '';
       this.submitted = true;
       this.$validator.validate().then(isValid => {
-        if (isValid) {
+        if (isValid && this.passwordbis == this.user.password) {
           this.$store.dispatch('auth/register', this.user).then(
             data => {
               this.message = data.message;

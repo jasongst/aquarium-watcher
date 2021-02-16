@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 
@@ -11,12 +10,9 @@ export const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/home',
-      component: Home
+      alias: "/profile",
+      name: 'profile',
+      component: () => import('./views/Profile.vue')
     },
     {
       path: '/login',
@@ -27,22 +23,25 @@ export const router = new Router({
       component: Register
     },
     {
-      path: '/profile',
-      name: 'profile',
-      // lazy-loaded
-      component: () => import('./views/Profile.vue')
+      path: "/aquariums",
+      name: "aquariums",
+      component: () => import("./components/AquariumList")
     },
     {
-      path: '/user',
-      name: 'user',
-      // lazy-loaded
-      component: () => import('./views/BoardUser.vue')
+      path: "/aquariums/:id",
+      name: "aquarium-details",
+      component: () => import("./components/Aquarium")
+    },
+    {
+      path: "/add",
+      name: "aquarium-add",
+      component: () => import("./components/AddAquarium")
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/login', '/register', '/home'];
+    const publicPages = ['/login', '/register'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('user');
   
