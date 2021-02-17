@@ -18,7 +18,6 @@ class AquariumDataService {
     }
 
     update(id, data) {
-        data.userId = user.id;
         return axios.put(API_URL + id, data, { headers: authHeader() });
     }
 
