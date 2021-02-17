@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api/aquariums/';
-const user = JSON.parse(localStorage.getItem('user'));
 import authHeader from './auth-header';
 
 class AquariumDataService {
