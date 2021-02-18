@@ -20,7 +20,7 @@
 
       <div class="form-check form-switch">
           <input class="form-check-input" type="checkbox" id="custom_aquarium" v-model="custom" value="custom">
-          <label class="form-check-label" for="custom_aquarium">Paramétrer les valeurs d'alertes ? (Température max de l'eau, PH max...)</label>
+          <label class="form-check-label" for="custom_aquarium">Paramétrer manuellement les valeurs d'alertes ? (Température max de l'eau, PH max...)</label>
       </div>
       <div v-if="custom" style="margin-top: 15px">
         <div class="row">

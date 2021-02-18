@@ -1,5 +1,12 @@
 <template>
-  <div v-if="currentAquarium" class="edit-form">
+  <div style="padding-top: 30px;">
+  <div v-if="loaded && currentMeasurements && !edit">
+    <line-chart :measures="currentMeasurements"></line-chart>
+    <button class="m-3 btn btn-sm btn-primary" @click="changeEdit">
+      Editer l'aquarium
+    </button>
+  </div>
+  <div v-if="currentAquarium && edit" class="edit-form">
     <h4>Aquarium</h4>
     <form>
       <div class="form-group">
@@ -56,29 +63,35 @@
     >
       Update
     </button>
+
+    <button class="m-3 btn btn-sm btn-primary" @click="changeEdit">
+      Voir la courbe des données
+    </button>
     <p>{{ message }}</p>
     </form>
   </div>
 
-  <div v-else-if="!error" class="alert alert-danger"> 
+  <div v-else-if="error" class="alert alert-danger"> 
     Une erreur est survenue ! Peut-être essayez-vous d'accéder à un aquarium qui ne vous appartient ou qui n'existe pas.
   </div>
-
-  <div v-else>
-    <br />
-    <p>Please click on an aquarium...</p>
   </div>
 </template>
 
 <script>
 import AquariumDataService from "../services/aquariums.service";
+import MeasurementDataService from "../services/measurements.service";
+import LineChart from './LineChart.vue';
 
 export default {
+  components: { LineChart },
   name: "aquarium",
   data() {
     return {
       currentAquarium: null,
+      currentMeasurements: null,
+      edit: false,
       error: false,
+      loaded: false,
       message: ''
     };
   },
@@ -86,12 +99,30 @@ export default {
     getAquarium(id) {
       AquariumDataService.get(id)
         .then(response => {
-          if(response.data) this.currentAquarium = response.data;
-          else this.error = true;
-        })
-        .catch(e => {
+          this.currentAquarium = response.data;
+        }).catch(e => {
+          this.error = true;
           console.log(e);
         });
+      MeasurementDataService.getAll(id).then(response => {
+        if(response.data.length) {
+          this.currentMeasurements = response.data;
+          this.currentMeasurements.forEach(measure => {
+            measure.measure_ph = measure.measure_ph.toFixed(1);
+            measure.measure_kh = measure.measure_kh.toFixed(1);
+            measure.measure_gh = measure.measure_gh.toFixed(1);
+            measure.measure_nh4 = measure.measure_nh4.toFixed(2);
+            measure.measure_no2 = measure.measure_no2.toFixed(2);
+            measure.measure_no3 = measure.measure_no3.toFixed(2);
+            measure.measure_cu = measure.measure_cu.toFixed(2);
+          });
+          this.loaded = true
+        } 
+        else this.currentMeasurements = null;
+      })
+      .catch(e => {
+        console.log(e);
+      });
     },
 
     updateAquarium() {
@@ -114,7 +145,9 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    }
+    },
+
+    changeEdit() {this.edit = !this.edit;}
   },
   mounted() {
     this.message = '';
