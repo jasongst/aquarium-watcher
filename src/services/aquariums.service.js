@@ -13,7 +13,6 @@ class AquariumDataService {
     }
 
     create(data) {
-        console.log(data);
         return axios.post(API_URL, data, { headers: authHeader() });
     }
 

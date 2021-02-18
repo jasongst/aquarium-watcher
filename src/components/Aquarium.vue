@@ -60,6 +60,10 @@
     </form>
   </div>
 
+  <div v-else-if="!error" class="alert alert-danger"> 
+    Une erreur est survenue ! Peut-être essayez-vous d'accéder à un aquarium qui ne vous appartient ou qui n'existe pas.
+  </div>
+
   <div v-else>
     <br />
     <p>Please click on an aquarium...</p>
@@ -74,6 +78,7 @@ export default {
   data() {
     return {
       currentAquarium: null,
+      error: false,
       message: ''
     };
   },
@@ -81,8 +86,8 @@ export default {
     getAquarium(id) {
       AquariumDataService.get(id)
         .then(response => {
-          this.currentAquarium = response.data;
-          console.log(response.data);
+          if(response.data) this.currentAquarium = response.data;
+          else this.error = true;
         })
         .catch(e => {
           console.log(e);
