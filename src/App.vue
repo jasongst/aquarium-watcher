@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <nav class="navbar navbar-expand navbar-dark bg-primary">
       <a href class="navbar-brand" @click.prevent>AquariumWatcher</a>
+      <div v-if="currentUser" class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <router-link to="/aquariums" class="nav-link">
+            <font-awesome-icon icon="fish" />Mes aquariums
+          </router-link>
+        </li>
+      </div>
 
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/register" class="nav-link">
-            <font-awesome-icon icon="user-plus" />Sign Up
+            <font-awesome-icon icon="user-plus" />Inscription
           </router-link>
         </li>
         <li class="nav-item">
           <router-link to="/login" class="nav-link">
-            <font-awesome-icon icon="sign-in-alt" />Login
+            <font-awesome-icon icon="sign-in-alt" />Connexion
           </router-link>
         </li>
       </div>
@@ -52,3 +59,9 @@ export default {
   }
 };
 </script>
+
+<style>
+svg {
+  margin: 0px 3px;
+}
+</style>

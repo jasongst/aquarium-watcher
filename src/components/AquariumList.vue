@@ -1,7 +1,7 @@
 <template>
   <div class="list row">
     <div class="col-md-6">
-      <h4>Aquariums List</h4>
+      <h4>Liste des aquariums</h4>
       <ul class="list-group">
         <li class="list-group-item"
           :class="{ active: index == currentIndex }"
@@ -12,9 +12,13 @@
           {{ aquarium.alias }}
         </li>
       </ul>
-
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllAquariums">
-        Remove All
+      <router-link to="/add">
+        <button class="m-3 btn btn-sm btn-primary">
+          Ajouter
+        </button>
+      </router-link>
+      <button class="m-3 btn btn-sm btn-secondary" @click="removeAllAquariums">
+        Tout supprimer
       </button>
     </div>
     <div class="col-md-6">
@@ -78,7 +82,7 @@
       </div>
       <div v-else>
         <br />
-        <p>Please click on an aquarium...</p>
+        <p>Cliquez sur un aquarium...</p>
       </div>
     </div>
   </div>

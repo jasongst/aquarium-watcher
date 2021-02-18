@@ -16,31 +16,31 @@
       </div>
       <div class="form-group">
         <label for="min_temperature">Température minimale</label>
-        <input type="number" class="form-control" id="min_temperature"
+        <input type="number" class="form-control" id="min_temperature" step="any"
           v-model="currentAquarium.min_temperature" required
         />
       </div>
       <div class="form-group">
         <label for="max_ph">PH maximum</label>
-        <input type="number" class="form-control" id="max_ph"
+        <input type="number" class="form-control" id="max_ph" step="any"
           v-model="currentAquarium.max_ph" required
         />
       </div>
       <div class="form-group">
         <label for="min_ph">PH minimum</label>
-        <input type="number" class="form-control" id="min_ph"
+        <input type="number" class="form-control" id="min_ph" step="any"
           v-model="currentAquarium.min_ph" required
         />
       </div>
       <div class="form-group">
         <label for="max_kh">KH maximum</label>
-        <input type="number" class="form-control" id="max_kh"
+        <input type="number" class="form-control" id="max_kh" step="any"
           v-model="currentAquarium.max_kh" required
         />
       </div>
       <div class="form-group">
         <label for="min_kh">KH minimum</label>
-        <input type="number" class="form-control" id="min_kh"
+        <input type="number" class="form-control" id="min_kh" step="any"
           v-model="currentAquarium.min_kh" required
         />
       </div>
