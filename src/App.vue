@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-primary">
-      <a href class="navbar-brand" @click.prevent>AquariumWatcher</a>
+      <a href class="navbar-brand" @click.prevent><img src="./assets/aquariumwatcher.png" height="40px"/></a>
       <div v-if="currentUser" class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/aquariums" class="nav-link">
@@ -32,7 +32,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href @click.prevent="logOut">
-            <font-awesome-icon icon="sign-out-alt" />LogOut
+            <font-awesome-icon icon="sign-out-alt" />Déconnexion
           </a>
         </li>
       </div>
