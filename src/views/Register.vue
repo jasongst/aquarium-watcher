@@ -3,8 +3,7 @@
     <div class="card card-container">
       <img
         id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
+        src="../assets/logobleu.png"
       />
       <form name="form" @submit.prevent="handleRegister">
         <div v-if="!successful">
@@ -65,7 +64,7 @@
             >Les mots de passes ne sont pas les mêmes !</div>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary btn-block">S'inscrire</button>
+            <button class="btn btn-primary btn-block">Inscription</button>
           </div>
         </div>
       </form>
@@ -138,6 +137,12 @@ label {
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;
+}
+
+#profile-img {
+  height: 96px;
+  width: 158px;
+  margin: 0 auto 10px;
 }
 
 .card {

@@ -48,32 +48,6 @@
         <div>
           <label><strong>KH minimum:</strong></label> {{ currentAquarium.min_kh }}
         </div>
-        <div>
-          <table v-if="currentMeasurements" class="table">
-            <tr>
-              <th>°C</th>
-              <th>PH</th>
-              <th>KH</th>
-              <th>GH</th>
-              <th>NH4</th>
-              <th>NO2</th>
-              <th>NO3</th>
-              <th>CU</th>
-              <th>Date</th>
-            </tr>
-            <tr v-for="measure in currentMeasurements" :key="measure.id">
-              <th>{{measure.measure_temperature}}</th>
-              <th>{{measure.measure_ph}}</th>
-              <th>{{measure.measure_kh}}</th>
-              <th>{{measure.measure_gh}}</th>
-              <th>{{measure.measure_nh4}}</th>
-              <th>{{measure.measure_no2}}</th>
-              <th>{{measure.measure_no3}}</th>
-              <th>{{measure.measure_cu}}</th>
-              <th>{{measure.createdAt}}</th>
-            </tr>
-          </table>
-        </div>
         <a class="badge badge-warning"
           :href="'/aquariums/' + currentAquarium.id"
         >
@@ -90,7 +64,6 @@
 
 <script>
 import AquariumDataService from "../services/aquariums.service";
-import MeasurementDataService from "../services/measurements.service";
 
 export default {
   name: "aquariums-list",
@@ -98,7 +71,6 @@ export default {
     return {
       aquariums: [],
       currentAquarium: null,
-      currentMeasurements: null,
       currentIndex: -1,
     };
   },
@@ -122,24 +94,6 @@ export default {
 
     setActiveAquarium(aquarium, index) {
       this.currentAquarium = aquarium;
-      MeasurementDataService.getAll(aquarium.id).then(response => {
-        if(response.data.length) {
-          this.currentMeasurements = response.data;
-          this.currentMeasurements.forEach(measure => {
-            measure.measure_ph = measure.measure_ph.toFixed(1);
-            measure.measure_kh = measure.measure_kh.toFixed(1);
-            measure.measure_gh = measure.measure_gh.toFixed(1);
-            measure.measure_nh4 = measure.measure_nh4.toFixed(2);
-            measure.measure_no2 = measure.measure_no2.toFixed(2);
-            measure.measure_no3 = measure.measure_no3.toFixed(2);
-            measure.measure_cu = measure.measure_cu.toFixed(2);
-          });
-        } 
-        else this.currentMeasurements = null;
-      })
-      .catch(e => {
-        console.log(e);
-      });
       this.currentIndex = index;
     },
 

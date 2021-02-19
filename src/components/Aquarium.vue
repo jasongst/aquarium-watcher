@@ -1,12 +1,59 @@
 <template>
   <div style="padding-top: 30px;">
-  <div v-if="loaded && currentMeasurements && !edit">
-    <line-chart :measures="currentMeasurements"></line-chart>
-    <button class="m-3 btn btn-sm btn-primary" @click="changeEdit">
+  <div v-if="!edit">
+    <h3 style="text-align: center">{{currentAquarium.alias}}</h3>
+    <div class="row" style="padding: 30px">
+    <div class="card col-6" style="width: 3z0px; background-color: #f5f5f5; padding: 30px;">
+      <img src="../assets/all_the_data.svg" height="200px">
+      <div class="card-body">
+        <button class="btn btn-primary btn-block" :disabled="loading" @click="changeEdit(1)">
+          <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+          <span>Voir les données</span>
+        </button>
+      </div>
+    </div>
+    <div class="card col-6" style="width: 350px; background-color: #f5f5f5; padding: 30px;">
+      <img src="../assets/fish_bowl.svg" height="200px">
+      <div class="card-body">
+        <button class="btn btn-secondary btn-block" :disabled="loading" @click="changeEdit(2)">
+          <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+          <span>Éditer l'aquarium</span>
+        </button>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div v-else-if="loaded && currentMeasurements && edit === 1">
+    <line-chart :measures="currentMeasurements"></line-chart> <br />
+     <table v-if="currentMeasurements" class="table">
+            <tr>
+              <th>°C</th>
+              <th>PH</th>
+              <th>KH</th>
+              <th>GH</th>
+              <th>NH4</th>
+              <th>NO2</th>
+              <th>NO3</th>
+              <th>CU</th>
+              <th>Date</th>
+            </tr>
+            <tr v-for="measure in currentMeasurements" :key="measure.id">
+              <th>{{measure.measure_temperature}}</th>
+              <th>{{measure.measure_ph}}</th>
+              <th>{{measure.measure_kh}}</th>
+              <th>{{measure.measure_gh}}</th>
+              <th>{{measure.measure_nh4}}</th>
+              <th>{{measure.measure_no2}}</th>
+              <th>{{measure.measure_no3}}</th>
+              <th>{{measure.measure_cu}}</th>
+              <th>{{measure.createdAt}}</th>
+            </tr>
+          </table>
+    <button class="m-3 btn btn-sm btn-primary" @click="changeEdit(2)">
       Editer l'aquarium
     </button>
   </div>
-  <div v-if="currentAquarium && edit" class="edit-form">
+  <div v-if="currentAquarium && edit === 2" class="edit-form">
     <h4>Aquarium</h4>
     <form>
       <div class="form-group">
@@ -64,7 +111,7 @@
       Update
     </button>
 
-    <button class="m-3 btn btn-sm btn-primary" @click="changeEdit">
+    <button class="m-3 btn btn-sm btn-primary" @click="changeEdit(1)">
       Voir la courbe des données
     </button>
     <p>{{ message }}</p>
@@ -147,7 +194,7 @@ export default {
         });
     },
 
-    changeEdit() {this.edit = !this.edit;}
+    changeEdit(state) {this.edit = state;}
   },
   mounted() {
     this.message = '';

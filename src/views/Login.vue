@@ -3,8 +3,7 @@
     <div class="card card-container">
       <img
         id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
+        src="../assets/logobleu.png"
       />
       <form name="form" @submit.prevent="handleLogin">
         <div class="form-group">
@@ -124,6 +123,12 @@ label {
   -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+#profile-img {
+  height: 96px;
+  width: 158px;
+  margin: 0 auto 10px;
 }
 
 .profile-img-card {
