@@ -1,5 +1,5 @@
 <template>
-  <div class="list row">
+  <div class="list row" style="padding-top: 30px">
     <div class="col-md-6">
       <h4>Liste des aquariums</h4>
       <ul class="list-group">
@@ -10,6 +10,7 @@
           @click="setActiveAquarium(aquarium, index)"
         >
           {{ aquarium.alias }}
+          <span v-if="aquarium.danger" class="badge bg-danger rounded-pill">Danger</span>
         </li>
       </ul>
       <router-link to="/add">
@@ -70,15 +71,58 @@ export default {
   data() {
     return {
       aquariums: [],
+      measures: [],
       currentAquarium: null,
       currentIndex: -1,
     };
   },
   methods: {
+    checkDanger() {
+      let measure;
+      let aquarium;
+      let danger;
+      let message = '';
+      for(let i = 0; i < this.measures.length; i++) {
+        if(this.measures[i]) {
+          danger = false;
+          measure = this.measures[i];
+          aquarium = this.aquariums[i];
+          if(measure.measure_temperature < aquarium.min_temperature || measure.measure_temperature > aquarium.max_temperature) {
+            danger = true;
+            message += "-Température anormale <br />";
+          }
+          if(measure.measure_ph < aquarium.min_ph || measure.measure_ph > aquarium.max_ph) {
+            danger = true;
+            message += "-PH de l'eau anormal <br />";
+          }
+          if(measure.measure_kh < aquarium.min_kh || measure.measure_kh > aquarium.max_kh) {
+            danger = true;
+            message += "-KH de l'eau anormal <br />";
+          }
+          if(danger) {
+            this.aquariums[i].danger = true;
+            this.$fire({
+              title: `"${aquarium.alias}" (id:${aquarium.id})`,
+              type: 'warning',
+              html: message,
+              showCancelButton: true,
+              confirmButtonText: 'Voir l\'aquarium',
+              cancelButtonColor: '#d33',
+              cancelButtonText: 'Annuler'
+            }).then((result) => {
+              if (result.value) {this.$router.push(`/aquariums/${aquarium.id}`);}
+            });
+          }
+        }
+      }
+    },
+
     retrieveAquariums() {
       AquariumDataService.getAll()
         .then(response => {
-          this.aquariums = response.data;
+          this.aquariums = response.data.data;
+          this.measures = response.data.measure;
+          this.checkDanger();
           console.log(response.data);
         })
         .catch(e => {
@@ -101,6 +145,7 @@ export default {
       AquariumDataService.deleteAll()
         .then(response => {
           console.log(response.data);
+          this.aquariums = [];
           this.refreshList();
         })
         .catch(e => {
