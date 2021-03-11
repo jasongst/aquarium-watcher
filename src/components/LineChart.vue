@@ -64,9 +64,25 @@
         }
       }
     },
+    methods: {
+      convertDate($date) {
+        let date1 = new Date($date);
+        date1.setHours(date1.getHours() - 1);
+        let dateLocale = date1.toLocaleString('fr-FR',{
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+          });
+        
+        return dateLocale;
+      }
+    },
     mounted () {
         this.measures.forEach(measure => {
-                this.timestamp.push(measure.createdAt);
+                this.timestamp.push(this.convertDate(measure.createdAt));
                 this.temperature.push(measure.measure_temperature);
                 this.ph.push(measure.measure_ph);
                 this.kh.push(measure.measure_kh);

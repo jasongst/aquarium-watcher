@@ -22,7 +22,7 @@
     </div>
   </div>
   <div v-else-if="loaded && currentMeasurements && edit === 1">
-    <line-chart :measures="currentMeasurements"></line-chart> <br />
+    <line-chart :measures="cutListe(currentMeasurements)"></line-chart> <br />
      <table v-if="currentMeasurements" class="table">
             <tr>
               <th>°C</th>
@@ -47,7 +47,7 @@
               <th>{{measure.measure_no2}}</th>
               <th>{{measure.measure_no3}}</th>
               <th>{{measure.measure_cu}}</th>
-              <th>{{measure.createdAt}}</th>
+              <th>{{convertDate(measure.createdAt)}}</th>
             </tr>
           </table>
     <button class="m-3 btn btn-sm btn-primary" @click="changeEdit(2)">
@@ -172,6 +172,25 @@ export default {
         console.log(e);
       });
     },
+    cutListe(liste) {
+      if(liste.length <= 5) return liste;
+      return liste.slice(0, 4);
+    },
+    convertDate(date) {
+      let date1 = new Date(date);
+      date1.setHours(date1.getHours() - 1);
+      let dateLocale = date1.toLocaleString('fr-FR',{
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric'
+        });
+      
+      return dateLocale;
+      },
 
     updateAquarium() {
       AquariumDataService.update(this.currentAquarium.id, this.currentAquarium)

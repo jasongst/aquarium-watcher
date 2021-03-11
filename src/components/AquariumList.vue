@@ -49,10 +49,10 @@
         <div>
           <label><strong>KH minimum:</strong></label> {{ currentAquarium.min_kh }}
         </div>
-        <a class="badge badge-warning"
+        <a class="btn btn-primary"
           :href="'/aquariums/' + currentAquarium.id"
         >
-          Edit
+          Voir plus
         </a>
       </div>
       <div v-else>
